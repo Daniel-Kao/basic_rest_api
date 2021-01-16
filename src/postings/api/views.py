@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import generics, viewsets, mixins
 from postings.models import BlogPost
 from .serializers import BlogPostSerializer
 from .permissions import IsOwnerOrReadOnly
@@ -11,7 +11,17 @@ class BlogPostRudView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsOwnerOrReadOnly]
 
 
+class MyBlogPostApiView(generics.ListAPIView):
+    lookup_field = 'pk'
+    serializer_class = BlogPostSerializer
+
+    def get_queryset(self):
+        return BlogPost.objects.filter(user=self.request.user)
+
+
 class BlogPostApiView(generics.ListAPIView):
+    authentication_classes = []
+    permission_classes = []
     queryset = BlogPost.objects.all()
     lookup_field = 'pk'
     serializer_class = BlogPostSerializer
