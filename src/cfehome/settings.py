@@ -39,10 +39,15 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'postings.apps.PostingsConfig',
-    'core.apps.CoreConfig'
+    'core.apps.CoreConfig',
+    'go.apps.GoConfig'
 ]
 
 REST_FRAMEWORK = {
+    'DEFAULT_PARSER_CLASSES': [
+        'djangorestframework_camel_case.parser.CamelCaseJSONParser',
+        'rest_framework.parsers.JSONParser',
+    ],
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
@@ -127,7 +132,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'core.User'
-
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=500),
